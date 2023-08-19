@@ -11,13 +11,14 @@ import { chair } from './furniture/chair.js';
 import { vase } from './furniture/vase.js';
 import { choose } from './utils.js';
 import { initColoring } from './_coloring.js';
+import { pillow } from './furniture/pillow.js';
 
 let furniture = null
 function params(){
     furniture = choose([
         chaise, coffeTable, endTable, 
         lamp, ottoman, beanbag, 
-        stool, chair, vase
+        stool, chair, vase, pillow
     ])
     initColoring()
 }

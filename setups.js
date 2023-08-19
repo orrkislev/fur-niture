@@ -23,14 +23,14 @@ export function setup() {
 
 	// controls
 	controls = new OrbitControls(camera, renderer.domElement);
-	// controls.autoRotate = true;
-	// controls.autoRotateSpeed = 3;
-	// controls.enableDamping = true;
-	// controls.dampingFactor = 0.05;
-	// controls.enableZoom = false; // disable zoom
-	// controls.enablePan = false; // disable pan
-	// controls.minPolarAngle = Math.PI / 4;
-	// controls.maxPolarAngle = Math.PI / 2;
+	controls.autoRotate = true;
+	controls.autoRotateSpeed = 3;
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.05;
+	controls.enableZoom = false; // disable zoom
+	controls.enablePan = false; // disable pan
+	controls.minPolarAngle = Math.PI / 4;
+	controls.maxPolarAngle = Math.PI / 2;
 	
 
     // shadow and tone mapping

@@ -19,7 +19,6 @@ function params(){
         lamp, ottoman, beanbag, 
         stool, chair, vase
     ])
-    furniture = vase
     initColoring()
 }
 

@@ -6,7 +6,8 @@ import { scene } from './setups';
 import { addFrameFunc } from './utils';
 import { getColor, prepareGeometryColors } from './_coloring';
 
-export function fur(surfaceMesh, hairs = 1000, hairLength = .8) {
+let hairLength = .8
+export function fur(surfaceMesh, hairs = 1000) {
     prepareGeometryColors(surfaceMesh.geometry)
     scene.add(surfaceMesh)
 

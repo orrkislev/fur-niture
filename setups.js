@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { runFrameFuncs } from './utils';
+import { choose, runFrameFuncs } from './utils';
+import { colors } from './_coloring';
 
 
 export let renderer, scene, camera, controls;
@@ -12,13 +13,20 @@ export function setup() {
 	// renderer
 	renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	const windowSize = Math.min(window.innerWidth, window.innerHeight);
+	renderer.setSize(windowSize, windowSize);
+	renderer.setClearColor(0x000000, 0);
 	renderer.localClippingEnabled = true;
 	document.body.appendChild(renderer.domElement);
+	// center canvas
+	renderer.domElement.style.position = 'absolute';
+	renderer.domElement.style.top = '50%';
+	renderer.domElement.style.left = '50%';
+	renderer.domElement.style.transform = 'translate(-50%, -50%)';
 
 	// scene and camera
 	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+	camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
 	camera.position.set(-10, 15, -40);
 
 	// controls
@@ -41,8 +49,11 @@ export function setup() {
     // environment and background
     const environment = new RoomEnvironment();
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    scene.background = new THREE.Color(0xbbbbbb);
+    // scene.background = new THREE.Color(0xbbbbbb);
     scene.environment = pmremGenerator.fromScene(environment).texture;
+
+	document.body.style.background = `linear-gradient(20deg, white 0%, ${choose(colors)} 100%)`;
+	document.body.style.height = '100vh';
 }
 
 export function animate() {

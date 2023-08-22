@@ -64,7 +64,5 @@ export async function chair() {
 
         const box = new THREE.Box3().setFromObject(mesh);
         const boxSize = box.getSize(new THREE.Vector3())
-        console.log(boxSize)
-
     })
 }

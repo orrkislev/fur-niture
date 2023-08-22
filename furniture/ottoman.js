@@ -1,12 +1,13 @@
 import * as THREE from 'three'
 import { fur, furBaseMaterial } from '../fur.js'
+import { random } from '../utils.js'
 
 export function ottoman() {
     const shape = new THREE.Shape()
-    const r1 = 1
-    const r2 = 3
-    const w = 20
-    const h = 20
+    const r1 = random() < .5 ? 1 : random(1,10)
+    const r2 = random() < .5 ? 3 : random(3,10)
+    const w = random() < .5 ? 20 : random(10,30)
+    const h = random() < .5 ? 20 : random(10,30)
     shape.moveTo(0, 0)
     shape.lineTo(w - r1, 0)
     shape.quadraticCurveTo(w, 0, w, r1)

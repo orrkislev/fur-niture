@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 import { choose, perlin, random } from './utils';
 
-const colors = [
+export const colors = [
     'lightgreen',
     'lightblue',
     'pink',
     'orange',
     'yellow',
-    'purple',
+    'hotpink',
+    'mediumpurple',
     'cornflowerblue',
     'coral',
     'white'
@@ -18,30 +19,48 @@ let clr1 = null
 let clr2 = null
 let colorPattern = null
 let patternScale = 1
-export function initColoring(){
+export function initColoring() {
     const duoColor = random() < .5
 
     clr1 = choose(colors)
     clr2 = choose(colors)
-    if (random()<0.2) clr2 = choose(colors)
+    if (random() < 0.2) clr2 = choose(colors)
 
     clr1 = new THREE.Color(clr1)
     clr2 = new THREE.Color(clr2)
 
-    if (duoColor) colorPattern = choose(Object.values(coloringPattern))
-    else colorPattern = (pos) => clr1
+    if (duoColor) colorPattern = choose([
+        pattern_zebra, pattern_stripes, pattern_cow,
+        pattern_cameo, pattern_gradient
+    ])
+    else colorPattern = patten_none
 
+    colorPattern = new colorPattern()
     patternScale = random(.5, 1.5)
 }
 
-export function getColor(pos){
-    return colorPattern(pos, clr1, clr2)
+export function getColor(pos) {
+    return colorPattern.get(pos)
 }
 
-const coloringPattern = {
-    zebra: (pos) => {
-        const clrNoisePos = pos.clone().multiplyScalar(.2 * patternScale)
-        clrNoisePos.z *= 10
+
+function patten_none() {
+    this.get = (pos) => {
+        return clr1
+    }
+}
+function pattern_zebra() {
+    this.zebraScaler = choose([
+        new THREE.Vector3(1, 0, 0),
+        new THREE.Vector3(0, 1, 0),
+        new THREE.Vector3(0, 0, 1),
+    ])
+    if (random() < 0.5) this.zebraScaler = new THREE.Vector3(random(-1, 1), random(-1, 1), random(-1, 1))
+    this.zebraScaler = this.zebraScaler.normalize().multiplyScalar(random(5, 10))
+
+    this.get = (pos) => {
+        let clrNoisePos = pos.clone().multiplyScalar(.2 * patternScale)
+        clrNoisePos = clrNoisePos.multiply(this.zebraScaler)
         const clrNoise = perlin.get3(clrNoisePos);
         let clr = clr1
         if (clrNoise < -.2) clr = clr2
@@ -50,40 +69,59 @@ const coloringPattern = {
         //     clr = clr2.lerp(clr1, v)
         // }
         return clr
-    },
-    stripes: (pos) => {
+    }
+}
+function pattern_stripes() {
+    this.getV = choose([
+        (pos) => Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z),
+        (pos) => Math.abs(pos.x) + Math.abs(pos.y),
+        (pos) => Math.abs(pos.x) + Math.abs(pos.z),
+        (pos) => Math.abs(pos.y) + Math.abs(pos.z),
+        (pos) => Math.abs(pos.x),
+        (pos) => Math.abs(pos.y),
+        (pos) => Math.abs(pos.z),
+    ])
+    this.scale = random(5, 15)
+
+    this.get = (pos) => {
         const patternPos = pos.clone().multiplyScalar(.2)
-        let v = Math.abs(patternPos.x) + Math.abs(patternPos.y) + Math.abs(patternPos.z)
-        v *= 15 * patternScale
+        let v = this.getV(patternPos)
+        v *= this.scale * patternScale
         let clr = clr1
         if (v % 2 < 1) clr = clr2
         return clr
-    },
-    cow: (pos) => {
+    }
+}
+function pattern_cow() {
+    this.get = (pos) => {
         const patternPos = pos.clone().multiplyScalar(.2 * patternScale)
         const v = perlin.get3(patternPos)
         let clr = clr1
         if (v < 0) clr = clr2
         return clr
-    },
-    cameo: (pos) => {
+    }
+}
+function pattern_cameo() {
+    this.get = (pos) => {
         let clr = new THREE.Color(0xffffff)
-        let noisePos = pos.clone().multiplyScalar(.2 * patternScale)
-        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0xff0000), .3)
-        noisePos.add(new THREE.Vector3(0,0,100))
-        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0x00ff00), .3)
-        noisePos.add(new THREE.Vector3(100,0,0))
-        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0x0000ff), .3)
+        let noisePos = pos.clone().add(new THREE.Vector3(1000,1000,1000)).multiplyScalar(.2 * patternScale)
+        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0xff0000), .5)
+        noisePos.add(new THREE.Vector3(0, 0, 100))
+        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0x00ff00), .5)
+        noisePos.add(new THREE.Vector3(100, 0, 0))
+        if (perlin.get3(noisePos) < 0) clr = clr.lerp(new THREE.Color(0x0000ff), .5)
         return clr
-    },
-    gradient: (pos) => {
+    }
+}
+function pattern_gradient() {
+    this.get = (pos) => {
         const v = pos.y / 5
         const clr = clr1.clone().lerp(clr2, v)
         return clr
     }
 }
 
-export function prepareGeometryColors(geometry){
+export function prepareGeometryColors(geometry) {
     const position = geometry.attributes.position
     const colors = []
     for (let i = 0; i < position.count; i++) {

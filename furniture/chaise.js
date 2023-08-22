@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { scene } from '../setups.js';
 import { fur, furBaseMaterial } from '../fur.js';
+import { random } from '../utils.js';
 
 export function chaise() {
 
@@ -12,13 +13,13 @@ export function chaise() {
         new THREE.Vector3(10, 5, 0),
         new THREE.Vector3(20, 15, 0),
     ])
-    const startSitting = .1
+    const startSitting = random(.05, .25) // .1
     const legCurvePoints = []
     for (let i = startSitting; i <= 1; i += .01)
         legCurvePoints.push(legCurve.getPointAt(i))
     const sittingCurve = new THREE.CatmullRomCurve3(legCurvePoints)
 
-    const legPos = .8
+    const legPos = random(.7, 1)  // .8
     const legBack1 = legCurve.getPointAt(legPos)
     const legBackT = legCurve.getTangentAt(legPos).cross(new THREE.Vector3(0, 0, 1))
     const legBack2 = legBack1.clone().add(legBackT.clone().multiplyScalar(1.5))
@@ -31,8 +32,8 @@ export function chaise() {
         legBack3,
     ])
 
-    const chaiseThickness = .5
-    const chaiseWidth = 6
+    const chaiseThickness = random(.2,1) // .5
+    const chaiseWidth = random(4,9) // 6
 
     const geometry = extrude(sittingCurve, makeChaiseShape(chaiseWidth, 0, chaiseThickness))
     const mesh = new THREE.Mesh(geometry, furBaseMaterial);

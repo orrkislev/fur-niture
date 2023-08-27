@@ -17,8 +17,8 @@ export default function coffeTable(){
         new THREE.Vector2(-12, 2),
     ])
 
-    const tableThickness = random(2,15)
-    const legHeight = random(3,10)
+    const tableThickness = 3 //random(2,15)
+    const legHeight = 6 // random(3,10)
 
     const shape = new THREE.Shape(crv.getPoints(300))
     const extrudeSettings = {

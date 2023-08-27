@@ -3,9 +3,9 @@ import { fur, furBaseMaterial } from '../fur.js'
 import { random } from '../utils.js'
 
 export function endTable() {
-    const neckLength = random(10,30)
-    const dishR = random(8,24)
-    const dishThickness = random(.2,1.5)
+    const neckLength = 25 // random(10,30)
+    const dishR = 15 // random(8,24)
+    const dishThickness = .5 // random(.2,1.5)
 
     const path = new THREE.Path()
     path.moveTo(0, 0)
@@ -29,8 +29,8 @@ export function endTable() {
 }
 
 export function lamp() {
-    const lampR = random(3,3)
-    const lampH = random(20,70)
+    const lampR = 5 // random(3,3)
+    const lampH = 28 // random(20,70)
 
     const path = new THREE.Path()
     path.moveTo(0, 0)

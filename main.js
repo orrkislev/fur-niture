@@ -16,16 +16,16 @@ import { pillow } from './furniture/pillow.js';
 let furniture = null
 function params(){
     furniture = choose([
-        // {func:chaise, name:'Chaise'}, 
-        // {func:coffeTable, name:'Coffe Table'},
-        // {func:endTable,  name:'End Table'},
-        // {func:lamp,  name:'Lamp'},
+        {func:chaise, name:'Chaise'}, 
+        {func:coffeTable, name:'Coffe Table'},
+        {func:endTable,  name:'End Table'},
+        {func:lamp,  name:'Lamp'},
         {func:ottoman,  name:'Ottoman'},
-        // {func:beanbag,  name:'Beanbag'},
-        // {func:stool,  name:'Stool'},
-        // {func:chair,  name:'Chair'},
-        // {func:vase, name:'Vase'},
-        // {func:pillow, name:'Pillow'},
+        {func:beanbag,  name:'Beanbag'},
+        {func:stool,  name:'Stool'},
+        {func:chair,  name:'Chair'},
+        {func:vase, name:'Vase'},
+        {func:pillow, name:'Pillow'},
     ])
     initColoring()
 
@@ -35,8 +35,6 @@ function params(){
     }
     if (colorPattern.name) features['Color Pattern'] = colorPattern.name
     $fx.features(features)
-
-    console.log($fx.getFeatures())
 }
 
 async function main() {

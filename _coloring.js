@@ -17,7 +17,7 @@ export const colors = [
 
 let clr1 = null
 let clr2 = null
-let colorPattern = null
+export let colorPattern = null
 let patternScale = 1
 export function initColoring() {
     const duoColor = random() < .5
@@ -45,11 +45,13 @@ export function getColor(pos) {
 
 
 function patten_none() {
+    this.name = null
     this.get = (pos) => {
         return clr1
     }
 }
 function pattern_zebra() {
+    this.name = 'Zebra'
     this.zebraScaler = choose([
         new THREE.Vector3(1, 0, 0),
         new THREE.Vector3(0, 1, 0),
@@ -72,6 +74,7 @@ function pattern_zebra() {
     }
 }
 function pattern_stripes() {
+    this.name = 'Stripes'
     this.getV = choose([
         (pos) => Math.abs(pos.x) + Math.abs(pos.y) + Math.abs(pos.z),
         (pos) => Math.abs(pos.x) + Math.abs(pos.y),
@@ -93,6 +96,7 @@ function pattern_stripes() {
     }
 }
 function pattern_cow() {
+    this.name = 'Hide'
     this.get = (pos) => {
         const patternPos = pos.clone().multiplyScalar(.2 * patternScale)
         const v = perlin.get3(patternPos)
@@ -102,6 +106,7 @@ function pattern_cow() {
     }
 }
 function pattern_cameo() {
+    this.name = 'Vibrant'
     this.get = (pos) => {
         let clr = new THREE.Color(0xffffff)
         let noisePos = pos.clone().add(new THREE.Vector3(1000,1000,1000)).multiplyScalar(.2 * patternScale)
@@ -114,6 +119,7 @@ function pattern_cameo() {
     }
 }
 function pattern_gradient() {
+    this.name = 'Gradient'
     this.get = (pos) => {
         const v = pos.y / 5
         const clr = clr1.clone().lerp(clr2, v)

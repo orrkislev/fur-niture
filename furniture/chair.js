@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { fur, furBaseMaterial } from '../fur';
 import { scene } from '../setups';
+import { random } from '../utils';
 
 export async function chair() {
 
@@ -50,8 +51,6 @@ export async function chair() {
     scene.add(leg4);
 
 
-
-
     const loader = new OBJLoader();
     const model = await loader.loadAsync('furniture/chair.obj');
     model.children.forEach(child => {
@@ -65,4 +64,6 @@ export async function chair() {
         const box = new THREE.Box3().setFromObject(mesh);
         const boxSize = box.getSize(new THREE.Vector3())
     })
+
+    scene.rotateY(random() < .5 ? -3 * Math.PI / 4 : -Math.PI / 4)
 }

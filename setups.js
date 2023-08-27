@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { choose, runFrameFuncs } from './utils';
+import { choose, random, runFrameFuncs } from './utils';
 import { colors } from './_coloring';
 
 
@@ -27,7 +27,9 @@ export function setup() {
 	// scene and camera
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-	camera.position.set(-10, 15, -40);
+	// camera.position.set(-10, 15, -40);
+	camera.position.set(0, random(10,20), 0);
+
 
 	// controls
 	controls = new OrbitControls(camera, renderer.domElement);
@@ -52,15 +54,18 @@ export function setup() {
     // scene.background = new THREE.Color(0xbbbbbb);
     scene.environment = pmremGenerator.fromScene(environment).texture;
 
-	document.body.style.background = `linear-gradient(20deg, white 0%, ${choose(colors)} 100%)`;
+	const bottomColor = random() < .4 ? 'white' : choose(colors)
+	document.body.style.background = `linear-gradient(20deg, ${bottomColor} 0%, ${choose(colors)} 100%)`;
 	document.body.style.height = '100vh';
 }
 
+let frameCount = 0
 export function animate() {
-    requestAnimationFrame(animate);
+	requestAnimationFrame(animate);
     runFrameFuncs()
     controls.update();
     renderer.render(scene, camera);
+	if (frameCount++ == 20) fxpreview()
 }
 
 

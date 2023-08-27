@@ -62,6 +62,9 @@ export function chaise() {
     const legBackMesh2 = legBackMesh.clone()
     legBackMesh2.translateZ(-chaiseWidth * 2 + 1)
     scene.add(legBackMesh2);
+
+
+    scene.rotateY(random() < .5 ? Math.PI / 4 : 3 * Math.PI / 4)
 }
 
 export function extrude(path, shape) {

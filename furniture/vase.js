@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { fur, furBaseMaterial } from '../fur';
+import { scene } from '../setups';
 
 export async function vase() {
 
@@ -13,4 +14,6 @@ export async function vase() {
         mesh.castShadow = true
         fur(mesh, 100 * 1000)
     })
+
+    scene.rotateY(Math.PI / 2)
 }
